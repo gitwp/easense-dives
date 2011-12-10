@@ -6,7 +6,7 @@ package cart {
 		public var quantity:uint;
 		public var subtotal:Number;
 
-		public function ShoppingCartItem( product:Product, quantity:uint=1 ){
+		public function ShoppingCartItem(product:Product, quantity:uint=1){
 			this.product = product;
 			this.quantity = quantity;
 			calculateSubtotal();

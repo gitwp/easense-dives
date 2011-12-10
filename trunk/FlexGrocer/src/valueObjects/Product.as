@@ -11,9 +11,9 @@ package valueObjects {
 		public var isLowFat:Boolean;
 		public var imageName:String;
 
-		public function Product( catID:Number, prodName:String, unitID:Number,
+		public function Product(catID:Number, prodName:String, unitID:Number,
 								 cost:Number, listPrice:Number, description:String, isOrganic:Boolean,
-								 isLowFat:Boolean, imageName:String ) { 
+								 isLowFat:Boolean, imageName:String) { 
 			this.catID = catID;
 			this.prodName = prodName;
 			this.unitID = unitID;
@@ -29,12 +29,12 @@ package valueObjects {
 			return "[Product]" + this.prodName;
 		}
 
-		public static function buildProduct( o:Object ):Product {
+		public static function buildProduct(o:Object):Product {
 			var p:Product;
 			
-			p = new Product( o.catID, o.prodName, o.unitID, o.cost,
-							 o.listPrice, o.description, ( o.isOrganic == 'true' ),
-							 ( o.isLowFat == 'true' ), o.imageName );
+			p = new Product(o.catID, o.prodName, o.unitID, o.cost,
+							 o.listPrice, o.description, (o.isOrganic == 'true'),
+							 (o.isLowFat == 'true'), o.imageName);
 			
 			return p;
 		}		
