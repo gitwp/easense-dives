@@ -37,6 +37,16 @@ package valueObjects {
 							 (o.isLowFat == 'true'), o.imageName);
 			
 			return p;
-		}		
+		}
+		
+		public static function bulidProductFromAttributes(data:XML):Product {
+			var p:Product;
+			
+			p = new Product(data.@catID, data.@prodName, data.@unitID, data.@cost,
+				data.@listPrice, data.@description, (data.@isOrganic == 'Yes'),
+				(data.@isLowFat == 'Yes'), data.@imageName);;
+			
+			return p;
+		}
 	}
 }

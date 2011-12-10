@@ -10,12 +10,16 @@
 	</s:states>
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
-		<fx:XML id="groceryInventory" source="assets/inventory.xml"/>
+		<!--<fx:XML id="groceryInventory" source="assets/inventory.xml"/>-->
 
 		<s:HTTPService id="categoryService"
 					   url="http://www.flexgrocer.com/category.xml"
 					   resultFormat="e4x"
 					   result="handleCategoryResult(event)"/>
+		<s:HTTPService id="productService"
+					   url="http://www.flexgrocer.com/categorizedProducts.xml"
+					   resultFormat="e4x"
+					   result="handleProductResult(event)"/>
 	</fx:Declarations>
 
 	<fx:Script>
@@ -23,6 +27,7 @@
 			import cart.ShoppingCart;
 			import cart.ShoppingCartItem;
 			
+			import mx.collections.ArrayCollection;
 			import mx.collections.XMLListCollection;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
@@ -33,10 +38,13 @@
 			public var shoppingCart:ShoppingCart = new ShoppingCart();
 
 			[Bindable]
-			private var theProduct:Product;
-
-			[Bindable]
 			private var categories:XMLListCollection;
+			
+			[Bindable]
+			private var groceryInventory:ArrayCollection;
+			
+			[Bindable]
+			private var currentProduct:Product;
 
 			private function handleViewCartClick(event:MouseEvent):void {
 				this.currentState="cartView";
@@ -46,17 +54,28 @@
 				var sci:ShoppingCartItem = new ShoppingCartItem(product);
 				shoppingCart.addItem(sci);
 				trace(shoppingCart);
+				
+				currentProduct = groceryInventory.getItemAt(Math.random() * groceryInventory.length) as Product;
 			}
 
 			private function handleCreationComplete(event:FlexEvent):void {
-				theProduct = Product.buildProduct(groceryInventory);
-
-				trace(theProduct);
 				categoryService.send();
+				productService.send();
 			}
 			
-			private function handleCategoryResult(event:ResultEvent):void{
+			private function handleCategoryResult(event:ResultEvent):void {
 				categories = new XMLListCollection(event.result.category);
+			}
+			
+			private function handleProductResult(event:ResultEvent):void {
+				var products:Array = new Array();
+				for each (var p:XML in event.result..product) {
+					products.push(Product.bulidProductFromAttributes(p));
+				}
+				
+				groceryInventory = new ArrayCollection(products);
+				
+				currentProduct = groceryInventory.getItemAt(0) as Product;
 			}
 		]]>
 	</fx:Script>
@@ -78,33 +97,33 @@
 	<s:Label text="(c) 2009, FlexGrocer" right="10" bottom="10"/>
 	<s:HGroup x="0" y="0" width="100%" height="100%" id="bodyGroup">
 		<s:VGroup width="100%" height="150" id="products" width.cartView="0" height.cartView="0" visible.cartView="false">
-			<s:Label text="Milk" id="prodName"/>
-			<mx:Image source="@Embed('assets/dairy_milk.jpg')" scaleContent="true" 
+			<s:Label text="{currentProduct.prodName}" id="prodName"/>
+			<mx:Image source="assets/{currentProduct.imageName}" scaleContent="true" 
 					  mouseOver="this.currentState='expanded'"
 					  mouseOut="this.currentState='State1'"/>
-			<s:Label text="$1.99" id="price"/>
+			<s:Label text="${currentProduct.listPrice}" id="price"/>
 			<s:Button label="AddToCart" id="add"
-					  click="addToCart(event, theProduct)"/>
+					  click="addToCart(event, currentProduct)"/>
 		</s:VGroup>
 		<s:VGroup height="100%" id="cartGroup" width.cartView="100%">
 			<s:Label text="Your Cart Total: ${shoppingCart.total}"/>
 			<s:Button label="View Cart" click="handleViewCartClick(event)" includeIn="State1"/>
-			<mx:DataGrid includeIn="cartView" id="dgCart" width="100%">
+			<mx:DataGrid includeIn="cartView" id="dgCart" width="100%" dataProvider="{shoppingCart.items}">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Column 1" dataField="col1"/>
-					<mx:DataGridColumn headerText="Column 2" dataField="col2"/>
-					<mx:DataGridColumn headerText="Column 3" dataField="col3"/>
+					<mx:DataGridColumn headerText="Product Name" dataField="product.prodName"/>
+					<mx:DataGridColumn headerText="Price" dataField="product.listPrice"/>
+					<mx:DataGridColumn headerText="Quantity" dataField="quantity"/>
 				</mx:columns>
 			</mx:DataGrid>
 			<s:Button includeIn="cartView" label="Continue Shopping" click="this.currentState=''"/>
 		</s:VGroup>
 	</s:HGroup>
 	<s:VGroup includeIn="expanded" x="200" width="100%">
-		<s:RichText text="{theProduct.description}" width="50%"/>
+		<s:RichText text="{currentProduct.description}" width="50%"/>
 		<s:Label text="Certified Organic"
-				 visible="{theProduct.isOrganic}"/>
+				 visible="{currentProduct.isOrganic}"/>
 		<s:Label text="Low Fat"
-				 visible="{theProduct.isLowFat}"/>
+				 visible="{currentProduct.isLowFat}"/>
 	</s:VGroup>
 
 </s:Application>
