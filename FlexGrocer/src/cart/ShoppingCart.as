@@ -1,6 +1,9 @@
 package cart {
+	import mx.collections.ArrayCollection;
+
 	public class ShoppingCart {
-		public var items:Array = new Array();
+		[Bindable]
+		public var items:ArrayCollection = new ArrayCollection();
 		
 		[Bindable]
 		public var total:Number=0;
@@ -12,7 +15,7 @@ package cart {
 			if (isItemInCart(item)) {
 				updateItem(item);
 			} else {
-				items.push(item);
+				items.addItem(item);
 			}
 			calculateTotal();
 		}
