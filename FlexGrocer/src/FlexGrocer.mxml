@@ -20,14 +20,14 @@
 
 	<fx:Script>
 		<![CDATA[
+			import cart.ShoppingCart;
+			import cart.ShoppingCartItem;
+			
 			import mx.collections.XMLListCollection;
 			import mx.events.FlexEvent;
 			import mx.rpc.events.ResultEvent;
 			
-			import valueObjects.Product;
-			
-			import cart.ShoppingCartItem;
-			import cart.ShoppingCart;			
+			import valueObjects.Product;			
 			
 			[Bindable]
 			public var shoppingCart:ShoppingCart = new ShoppingCart();
@@ -38,25 +38,25 @@
 			[Bindable]
 			private var categories:XMLListCollection;
 
-			private function handleViewCartClick( event:MouseEvent ):void {
+			private function handleViewCartClick(event:MouseEvent):void {
 				this.currentState="cartView";
 			}
 
-			private function addToCart(product:Product):void {
-				var sci:ShoppingCartItem = new ShoppingCartItem( product );
-				shoppingCart.addItem( sci );
-				trace( shoppingCart );
+			private function addToCart(event:MouseEvent, product:Product):void {
+				var sci:ShoppingCartItem = new ShoppingCartItem(product);
+				shoppingCart.addItem(sci);
+				trace(shoppingCart);
 			}
 
 			private function handleCreationComplete(event:FlexEvent):void {
-				theProduct = Product.buildProduct( groceryInventory );
+				theProduct = Product.buildProduct(groceryInventory);
 
-				trace( theProduct );
+				trace(theProduct);
 				categoryService.send();
 			}
 			
 			private function handleCategoryResult(event:ResultEvent):void{
-				categories = new XMLListCollection( event.result.category );
+				categories = new XMLListCollection(event.result.category);
 			}
 		]]>
 	</fx:Script>
@@ -67,7 +67,7 @@
 	
 	<s:controlBarContent>
 		<s:Button y="10" label="Checkout" id="btnCheckout" right="10"/>
-		<s:Button y="10" label="View Cart" id="btnCartView" right="90" click.State1="handleViewCartClick( event )"/>
+		<s:Button y="10" label="View Cart" id="btnCartView" right="90" click.State1="handleViewCartClick(event)"/>
 		<s:Button label="Flex Grocer" x="5" y="5"/>
 		<s:List left="200" height="40" dataProvider="{categories}" labelField="name">
 			<s:layout>
@@ -84,11 +84,11 @@
 					  mouseOut="this.currentState='State1'"/>
 			<s:Label text="$1.99" id="price"/>
 			<s:Button label="AddToCart" id="add"
-					  click="addToCart( theProduct )"/>
+					  click="addToCart(event, theProduct)"/>
 		</s:VGroup>
 		<s:VGroup height="100%" id="cartGroup" width.cartView="100%">
-			<s:Label text="Your Cart Total: $"/>
-			<s:Button label="View Cart" click="handleViewCartClick( event )" includeIn="State1"/>
+			<s:Label text="Your Cart Total: ${shoppingCart.total}"/>
+			<s:Button label="View Cart" click="handleViewCartClick(event)" includeIn="State1"/>
 			<mx:DataGrid includeIn="cartView" id="dgCart" width="100%">
 				<mx:columns>
 					<mx:DataGridColumn headerText="Column 1" dataField="col1"/>
