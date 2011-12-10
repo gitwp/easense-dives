@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<groceries>
+	<catName>Dairy</catName>
+	<prodName>Milk</prodName>
+	<imageName>assets/dairy_milk.jpg</imageName>
+	<cost>1.20</cost>
+	<listPrice>1.99</listPrice>
+	<isOrganic>true</isOrganic>
+	<isLowFat>true</isLowFat>
+	<description>Direct from California where cows are happiest!</description>
+</groceries>		
