@@ -1,5 +1,8 @@
 package cart {
 	import mx.collections.ArrayCollection;
+	import mx.collections.IViewCursor;
+	import mx.collections.Sort;
+	import mx.collections.SortField;
 
 	public class ShoppingCart {
 		[Bindable]
@@ -9,6 +12,14 @@ package cart {
 		public var total:Number=0;
 
 		public function ShoppingCart() {
+			sortItems();
+		}
+		
+		private function sortItems():void {
+			var itemSort:Sort = new Sort();
+			itemSort.fields = [new SortField("prodName"), new SortField("listPrice")];
+			items.sort = itemSort;
+			items.refresh();
 		}
 
 		public function addItem(item:ShoppingCartItem):void {
@@ -21,13 +32,12 @@ package cart {
 		}
 		
 		private function getItemInCart(item:ShoppingCartItem):ShoppingCartItem {
-			var existingItem:ShoppingCartItem;
-			for (var i:int=0; i<items.length; i++) {
-				existingItem = items[ i ] as ShoppingCartItem;
-				if (existingItem.product == item.product) {
-					return existingItem;
-				}
+			var cursor:IViewCursor = items.createCursor();
+			
+			if (cursor.findFirst(item)) {
+				return cursor.current as ShoppingCartItem;
 			}
+			
 			return null;
 		}
 
