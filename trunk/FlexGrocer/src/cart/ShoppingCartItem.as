@@ -12,7 +12,7 @@ package cart {
 			calculateSubtotal();
 		}
 		
-		public function calculateSubtotal():void{
+		public function calculateSubtotal():void {
 			this.subtotal = product.listPrice * quantity;
 		}
 		
