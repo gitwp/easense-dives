@@ -1,6 +1,9 @@
-package valueObjects {
+package valueObjects
+{
+
 	[Bindable]
-	public class Product {
+	public class Product
+	{
 		public var catID:Number;
 		public var prodName:String;
 		public var unitID:Number;
@@ -11,9 +14,8 @@ package valueObjects {
 		public var isLowFat:Boolean;
 		public var imageName:String;
 
-		public function Product(catID:Number, prodName:String, unitID:Number,
-								 cost:Number, listPrice:Number, description:String, isOrganic:Boolean,
-								 isLowFat:Boolean, imageName:String) { 
+		public function Product(catID:Number, prodName:String, unitID:Number, cost:Number, listPrice:Number, description:String, isOrganic:Boolean, isLowFat:Boolean, imageName:String)
+		{
 			this.catID = catID;
 			this.prodName = prodName;
 			this.unitID = unitID;
@@ -25,28 +27,19 @@ package valueObjects {
 			this.imageName = imageName;
 		}
 
-		public function toString():String {
+		public function toString():String
+		{
 			return "[Product]" + this.prodName;
 		}
 
-		public static function buildProduct(o:Object):Product {
-			var p:Product;
-			
-			p = new Product(o.catID, o.prodName, o.unitID, o.cost,
-							 o.listPrice, o.description, (o.isOrganic == 'true'),
-							 (o.isLowFat == 'true'), o.imageName);
-			
-			return p;
+		public static function buildProduct(o:Object):Product
+		{
+			return new Product(o.catID, o.prodName, o.unitID, o.cost, o.listPrice, o.description, (o.isOrganic == 'true'), (o.isLowFat == 'true'), o.imageName);
 		}
-		
-		public static function bulidProductFromAttributes(data:XML):Product {
-			var p:Product;
-			
-			p = new Product(data.@catID, data.@prodName, data.@unitID, data.@cost,
-				data.@listPrice, data.@description, (data.@isOrganic == 'Yes'),
-				(data.@isLowFat == 'Yes'), data.@imageName);;
-			
-			return p;
+
+		public static function bulidProductFromAttributes(data:XML):Product
+		{
+			return new Product(data.@catID, data.@prodName, data.@unitID, data.@cost, data.@listPrice, data.@description, (data.@isOrganic == 'Yes'), (data.@isLowFat == 'Yes'), data.@imageName);
 		}
 	}
 }
