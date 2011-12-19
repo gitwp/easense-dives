@@ -5,6 +5,7 @@ package cart
 	public class ShoppingCartItem
 	{
 		public var product:Product;
+		[Bindable]
 		public var quantity:uint;
 		public var subtotal:Number;
 
