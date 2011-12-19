@@ -55,7 +55,6 @@
 			{
 				var sci:ShoppingCartItem = new ShoppingCartItem(product);
 				shoppingCart.addItem(sci);
-				trace(shoppingCart);
 
 				currentProduct = groceryInventory.getItemAt(Math.random() * groceryInventory.length) as Product;
 			}
@@ -144,7 +143,7 @@
 			<s:List includeIn="State1"
 					width.State1="100%"
 					dataProvider="{shoppingCart.items}"/>
-			<s:Label text="Your Cart Total: ${shoppingCart.total}"/>
+			<s:Label text="Your Cart has {shoppingCart.items.length} items, Total: ${shoppingCart.total}"/>
 			<s:Button label="View Cart"
 					  click="handleViewCartClick(event)"
 					  includeIn="State1"/>
