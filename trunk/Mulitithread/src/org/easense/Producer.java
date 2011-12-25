@@ -16,7 +16,7 @@ public class Producer implements Runnable {
 	 */
 	private static int MAX_SIZE = 10;
 	
-	private char[] charArray = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+	private static char[] CHAR_ARRAY = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
 			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 			'w', 'x', 'y', 'z' };
 	
@@ -28,14 +28,14 @@ public class Producer implements Runnable {
 	public void run() {
 		if (productionLine != null) {
 			Random random = new Random();
-			int arrayLength = charArray.length;
+			int arrayLength = CHAR_ARRAY.length;
 			
 			while (true) {
 				synchronized (productionLine) {
 					if (productionLine.size() < MAX_SIZE) {
 						StringBuffer temp = new StringBuffer();
 						for (int index = 0; index < 5; index++) {
-							temp.append(charArray[random.nextInt(arrayLength)]);
+							temp.append(CHAR_ARRAY[random.nextInt(arrayLength)]);
 						}
 						System.out.print(Thread.currentThread().getName() + " Producing : " + temp.toString());
 						productionLine.add(temp.toString());
