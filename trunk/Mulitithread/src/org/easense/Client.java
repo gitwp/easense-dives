@@ -15,7 +15,7 @@ public class Client {
 		for (int i = 0; i < 9; i++) {
 			new Thread(new Consumer(productionLine), "Consumer " + i).start();
 		}
-		
+
 	}
 
 }
