@@ -10,26 +10,25 @@ public class Producer implements Runnable {
 	 * Store the produced productions;
 	 */
 	private List<String> productionLine;
-	
+
 	/**
 	 * The maximum products limit
 	 */
 	private static int MAX_SIZE = 10;
-	
-	private static char[] CHAR_ARRAY = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
-			'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-			'w', 'x', 'y', 'z' };
-	
+
+	private static char[] CHAR_ARRAY = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
+			'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' };
+
 	public Producer(List<String> productionLine) {
 		this.productionLine = productionLine;
 	}
-		
+
 	@Override
 	public void run() {
 		if (productionLine != null) {
 			Random random = new Random();
 			int arrayLength = CHAR_ARRAY.length;
-			
+
 			while (true) {
 				synchronized (productionLine) {
 					if (productionLine.size() < MAX_SIZE) {
@@ -42,7 +41,7 @@ public class Producer implements Runnable {
 						System.out.println(", Current Productions in producer: " + productionLine);
 					}
 				}
-				
+
 				try {
 					TimeUnit.MILLISECONDS.sleep(500);
 				} catch (InterruptedException e) {
