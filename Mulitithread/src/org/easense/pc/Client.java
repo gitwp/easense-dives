@@ -1,4 +1,4 @@
-package org.easense;
+package org.easense.pc;
 
 import java.util.ArrayList;
 import java.util.List;
