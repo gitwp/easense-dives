@@ -6,15 +6,15 @@ import java.util.concurrent.TimeUnit;
 public class Consumer implements Runnable {
 
 	private List<String> productionLine;
-	
+
 	public Consumer(List<String> productionLine) {
 		this.productionLine = productionLine;
 	}
-	
+
 	@Override
 	public void run() {
 		boolean running = true;
-		
+
 		while (running) {
 			synchronized (productionLine) {
 				if (productionLine.size() > 0) {
