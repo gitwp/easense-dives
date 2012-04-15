@@ -2,7 +2,7 @@ package org.easense;
 
 public class SentenceReverser {
 
-	public static String reverseWords(String orginalStr) {
+	public static String reverseSentence(String orginalStr) {
 		if (orginalStr == null || orginalStr.trim().equals("")) {
 			return orginalStr;
 		}
@@ -45,6 +45,6 @@ public class SentenceReverser {
 
 	public static void main(String[] args) {
 		String orginalStr = " I am a good and clever student ";
-		System.out.println(reverseWords(orginalStr));
+		System.out.println(reverseSentence(orginalStr));
 	}
 }
