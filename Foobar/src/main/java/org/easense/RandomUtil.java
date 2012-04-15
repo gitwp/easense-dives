@@ -39,7 +39,7 @@ public class RandomUtil {
 		
 		return multipleShuffle(elements, 1);
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(Arrays.toString(RandomUtil.multipleShuffle(new Integer[] { 1, 3, 5, 7 }, 3)));
 		System.out.println(Arrays.toString(RandomUtil.multipleShuffle(new String[] { "Foo", "Bar", "test" }, 3)));
