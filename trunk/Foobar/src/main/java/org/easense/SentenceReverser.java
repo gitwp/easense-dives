@@ -43,8 +43,4 @@ public class SentenceReverser {
 		}
 	}
 
-	public static void main(String[] args) {
-		String orginalStr = " I am a good and clever student ";
-		System.out.println(reverseSentence(orginalStr));
-	}
 }
