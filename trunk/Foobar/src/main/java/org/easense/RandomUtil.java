@@ -1,6 +1,5 @@
 package org.easense;
 
-import java.lang.reflect.Array;
 import java.util.Random;
 
 public class RandomUtil {
@@ -12,7 +11,7 @@ public class RandomUtil {
 		int genLen = source.length * factor;
 
 		@SuppressWarnings("unchecked")
-		T[] generated = (T[]) Array.newInstance(source.getClass().getComponentType(), genLen);
+		T[] generated = (T[]) new Object[genLen];
 		boolean[] visited = new boolean[genLen];
 
 		Random random = new Random();
