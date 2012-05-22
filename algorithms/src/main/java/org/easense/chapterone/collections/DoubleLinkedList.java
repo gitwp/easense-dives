@@ -9,7 +9,7 @@ public class DoubleLinkedList<Item> implements Iterable<Item> {
 	 * 
 	 * @author Easense
 	 * 
-	 * @param <Item>
+	 * @param <E>
 	 */
 	private class Node<E> {
 		E item;
