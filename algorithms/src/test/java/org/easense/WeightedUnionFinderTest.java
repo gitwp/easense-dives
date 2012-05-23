@@ -8,11 +8,12 @@ import org.easense.chapterone.WeightedUnionFinder;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import edu.princeton.StdRandom;
+
 public class WeightedUnionFinderTest {
 
 	private static final String TINY_FILE = "tinyUF.txt";
 	private static final String MEDIUM_FILE = "mediumUF.txt";
-	private static final String LARGE_FILE = "largeUF.txt";
 
 	@Test
 	@Ignore
@@ -21,15 +22,31 @@ public class WeightedUnionFinderTest {
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void mediumFileSearch() throws FileNotFoundException {
 		searchIn(MEDIUM_FILE);
 	}
 
 	@Test
-//	@Ignore
-	public void largeFileSearch() throws FileNotFoundException {
-		searchIn(LARGE_FILE);
+	@Ignore
+	public void largeAmountSearch() throws FileNotFoundException {
+		int size = 1000000;
+		WeightedUnionFinder finder = new WeightedUnionFinder(size);
+
+		for (int i = 0; i < size * 1.85; i++) {
+			int p = StdRandom.uniform(size);
+			int q = StdRandom.uniform(size);
+
+			if (finder.connected(p, q)) {
+				continue;
+			}
+
+			finder.union(p, q);
+			System.out.println(p + ", " + q);
+		}
+
+		System.out.println("Total: " + finder.componentSize()
+				+ " components\n===============================================\n");
 	}
 
 	private void searchIn(String path) throws FileNotFoundException {
