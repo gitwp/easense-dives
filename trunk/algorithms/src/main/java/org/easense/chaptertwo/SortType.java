@@ -1,5 +1,7 @@
 package org.easense.chaptertwo;
 
+import java.lang.reflect.Array;
+
 public enum SortType {
 	/**
 	 * Selection Sorting
@@ -88,6 +90,50 @@ public enum SortType {
 				gap /= 3;
 			}
 
+		}
+	}),
+	
+	/**
+	 * Merge sorting
+	 */
+	MERGE(new Sortable() {
+		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
+			this.sort(array, 0, array.length - 1, ascend);
+		}
+		
+
+		private <T extends Comparable<T>> void sort(T[] array, int lo, int hi, boolean ascend) {
+			if (lo >= hi) {
+				return;
+			}
+			
+			int mid = lo + (hi - lo) / 2;
+			sort(array, lo, mid, ascend);
+			sort(array, mid + 1, hi, ascend);
+			merge(array, lo, mid, hi, ascend);
+		}
+		
+		private <T extends Comparable<T>> void merge(T[] array, int lo, int mid, int hi, boolean ascend) {
+			@SuppressWarnings("unchecked")
+			T[] arrayCopy = (T[]) Array.newInstance(array.getClass().getComponentType(), hi - lo +  1);
+			System.arraycopy(array, lo, arrayCopy, 0, arrayCopy.length);
+			
+			int lowIdx = 0;
+			int highIdx = mid - lo + 1;
+			
+			for (int i = lo; i <= hi; i++) {
+				if (lowIdx > mid - lo) { 
+					// left sub array exhausted
+					array[i] = arrayCopy[highIdx++];
+				} else if (highIdx > hi - lo) { 
+					// right sub array exhausted
+					array[i] = arrayCopy[lowIdx++];
+				} else if (arrayCopy[lowIdx].compareTo(arrayCopy[highIdx]) < 0 == ascend) {
+					array[i] = arrayCopy[lowIdx++];
+				} else {
+					array[i] = arrayCopy[highIdx++];
+				}
+			}
 		}
 	})
 

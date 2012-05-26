@@ -4,26 +4,28 @@ import java.util.Random;
 
 import junit.framework.Assert;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SortingTest {
 	
 	// define the array's size
-	private final int PROBLEM_SCALE = 10000;
+	private final int PROBLEM_SCALE = 10;
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void selectionSort() {
 		sort(SortType.SELECTION);
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void insertionSort() {
 		sort(SortType.INSERTION);
 	}
 	
 	@Test
+	@Ignore
 	public void bubbleSort() {
 		sort(SortType.BUBBLE);
 	}
@@ -32,11 +34,15 @@ public class SortingTest {
 	public void shellSort() {
 		sort(SortType.SHELL);
 	}
+	
+	@Test
+	public void mergeSort() {
+		sort(SortType.MERGE);
+	}
 
 	private void sort(SortType sortType) {
 		Integer[] array = generateArray(PROBLEM_SCALE);
-		sortType.sort(array);
-		
+		sortType.sort(array, false);
 		Assert.assertTrue(isSorted(array));
 	}
 
@@ -54,15 +60,24 @@ public class SortingTest {
 		if (array == null || array.length <= 2) {
 			return true;
 		}
-		
-		boolean lastCompare = array[0].compareTo(array[1]) <= 0;
-		
-		for (int i = 2; i < array.length; i++) {
-			if (array[i - 1].compareTo(array[i]) > 0 == lastCompare) {
+
+		// record the result of last comparison
+		Boolean lastCompare = null;
+
+		for (int i = 1; i < array.length; i++) {
+			int compareResult = array[i - 1].compareTo(array[i]);
+			if (lastCompare == null || compareResult == 0) {
+				if (compareResult != 0) {
+					lastCompare = compareResult > 0;
+				}
+				continue;
+			}
+
+			if (compareResult > 0 != lastCompare) {
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 }
