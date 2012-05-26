@@ -79,7 +79,7 @@ public enum SortType {
 					int j = i;
 					while (j >= gap && (array[j - gap].compareTo(next) > 0 == ascend)) {
 						array[j] = array[j - gap];
-						j = j - gap;
+						j -= gap;
 					}
 					if (j != i) {
 						array[j] = next;
@@ -104,7 +104,7 @@ public enum SortType {
 	}
 
 	public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
-		if (array == null || array.length < 2) {
+		if (array == null || array.length <= 2) {
 			return;
 		}
 		sortAlgo.sort(array, ascend);
