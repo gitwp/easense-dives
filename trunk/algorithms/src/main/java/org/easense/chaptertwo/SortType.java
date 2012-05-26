@@ -23,7 +23,7 @@ public enum SortType {
 			}
 		}
 	}),
-	
+
 	/**
 	 * Insertion Sorting
 	 */
@@ -36,12 +36,12 @@ public enum SortType {
 				for (; j > 0 && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
 					array[j] = array[j - 1];
 				}
-				
+
 				array[j] = toInsert;
 			}
 		}
 	}),
-	
+
 	/**
 	 * Bubble Sorting, it's very similar with Insertion Sorting
 	 */
@@ -49,7 +49,7 @@ public enum SortType {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			int length = array.length;
 			for (int i = 0; i < length; i++) {
-				for (int j = i + 1; j < length - 1; j++) {
+				for (int j = i + 1; j < length; j++) {
 					if (array[i].compareTo(array[j]) > 0 == ascend) {
 						T temp = array[j];
 						array[j] = array[i];
@@ -58,8 +58,39 @@ public enum SortType {
 				}
 			}
 		}
+	}),
+
+	/**
+	 * Shell Sorting
+	 */
+	SHELL(new Sortable() {
+		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
+			int length = array.length;
+			int gap = 1;
+
+			// use the most next to length / 3 as the first gap
+			while (gap < length / 3) {
+				gap = gap * 3 + 1;
+			}
+
+			while (gap >= 1) {
+				for (int i = gap; i < length; i++) {
+					T next = array[i];
+					int j = i;
+					while (j >= gap && (array[j - gap].compareTo(next) > 0 == ascend)) {
+						array[j] = array[j - gap];
+						j = j - gap;
+					}
+					if (j != i) {
+						array[j] = next;
+					}
+				}
+				gap /= 3;
+			}
+
+		}
 	})
-	
+
 	;
 
 	private SortType(Sortable sortAlgo) {
