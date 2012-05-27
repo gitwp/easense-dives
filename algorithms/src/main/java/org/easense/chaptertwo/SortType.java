@@ -104,24 +104,21 @@ public enum SortType {
 		
 
 		private <T extends Comparable<T>> void sort(T[] array, int lo, int hi, boolean ascend) {
-			if (lo >= hi) {
-				return;
-			}
-			
 			// OPTIMIZE ONE
 			// if the substring's length is less than 20,
 			// use insertion sort to reduce recursive invocation
 			if (hi - lo < 20) {
-				int len = hi - lo + 1;
-				for (int i = lo; i < len; i++) {
+				for (int i = lo + 1; i <= hi; i++) {
 					T toInsert = array[i];
 					int j = i;
-					for (; j > 0 && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
+					for (; j > lo && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
 						array[j] = array[j - 1];
 					}
 
 					array[j] = toInsert;
 				}
+				
+				return;
 			}
 			
 			int mid = lo + (hi - lo) / 2;
