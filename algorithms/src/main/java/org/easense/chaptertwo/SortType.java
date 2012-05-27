@@ -2,6 +2,7 @@ package org.easense.chaptertwo;
 
 import java.lang.reflect.Array;
 
+
 public enum SortType {
 	/**
 	 * Selection Sorting
@@ -107,6 +108,22 @@ public enum SortType {
 				return;
 			}
 			
+			// OPTIMIZE ONE
+			// if the substring's length is less than 20,
+			// use insertion sort to reduce recursive invocation
+			if (hi - lo < 20) {
+				int len = hi - lo + 1;
+				for (int i = lo; i < len; i++) {
+					T toInsert = array[i];
+					int j = i;
+					for (; j > 0 && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
+						array[j] = array[j - 1];
+					}
+
+					array[j] = toInsert;
+				}
+			}
+			
 			int mid = lo + (hi - lo) / 2;
 			sort(array, lo, mid, ascend);
 			sort(array, mid + 1, hi, ascend);
@@ -114,6 +131,13 @@ public enum SortType {
 		}
 		
 		private <T extends Comparable<T>> void merge(T[] array, int lo, int mid, int hi, boolean ascend) {
+			// OPTIMIZE TWO
+			// if it is already in right order, skip this merge
+			// since there's no need to do so
+			if (array[mid].compareTo(array[mid + 1]) < 0 == ascend) {
+				return;
+			}
+			
 			@SuppressWarnings("unchecked")
 			T[] arrayCopy = (T[]) Array.newInstance(array.getClass().getComponentType(), hi - lo +  1);
 			System.arraycopy(array, lo, arrayCopy, 0, arrayCopy.length);
@@ -135,8 +159,73 @@ public enum SortType {
 				}
 			}
 		}
-	})
+	}),
+	
+	/**
+	 * Quick Sorting
+	 */
+	QUICK(new Sortable() {
+		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
+			this.sort(array, 0, array.length - 1, ascend);
+		}
+		
 
+		private <T extends Comparable<T>> void sort(T[] array, int lo, int hi, boolean ascend) {
+			if (lo >= hi) {
+				return;
+			}
+			
+			int partitionIdx = partition(array, lo, hi, ascend);
+			
+			// partially sort left array and right array
+			// no need to include the partitionIdx-th element
+			// since it is already in its final position
+			sort(array, lo, partitionIdx - 1, ascend);
+			sort(array, partitionIdx + 1, hi, ascend);
+		}
+		
+		private <T extends Comparable<T>> int partition(T[] array, int lo, int hi, boolean ascend) {
+			int leftIdx = lo;
+			int rightIdx = hi + 1;
+			
+			T toFinal = array[lo];
+			
+			while (true) {
+				// search from left to right to locate the element placed 
+				// in the wrong position which should be in the right
+				while (array[++leftIdx].compareTo(toFinal) < 0 == ascend) {
+					if (leftIdx >= hi) {
+						break;
+					}
+				}
+				
+				// search from right to left to locate the element placed 
+				// in the wrong position which should be in the left
+				while (array[--rightIdx].compareTo(toFinal) > 0 == ascend) {
+					if (rightIdx <= lo) {
+						break;
+					}
+				}
+				
+				if (leftIdx >= rightIdx) {
+					break;
+				} else {
+					exchange(array, leftIdx, rightIdx);
+				}
+			}
+			
+			exchange(array, lo, rightIdx);
+			
+			return rightIdx;
+		}
+		
+		private <T extends Comparable<T>> void exchange(T[] array, int i, int j) {
+			T temp = array[i];
+			array[i] = array[j];
+			array[j] = temp;
+		}
+	})
+	
 	;
 
 	private SortType(Sortable sortAlgo) {
