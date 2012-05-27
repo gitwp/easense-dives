@@ -2,15 +2,14 @@ package org.easense.chaptertwo;
 
 import java.util.Random;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class SortingTest {
 	
 	// define the array's size
-	private final int PROBLEM_SCALE = 10;
+	private final int PROBLEM_SCALE = 20;
 
 	@Test
 	@Ignore
@@ -31,18 +30,27 @@ public class SortingTest {
 	}
 	
 	@Test
+	@Ignore
 	public void shellSort() {
 		sort(SortType.SHELL);
 	}
 	
 	@Test
+	@Ignore
 	public void mergeSort() {
 		sort(SortType.MERGE);
+	}
+	
+	@Test
+	public void quickSort() {
+		sort(SortType.QUICK);
 	}
 
 	private void sort(SortType sortType) {
 		Integer[] array = generateArray(PROBLEM_SCALE);
-		sortType.sort(array, false);
+//		System.out.println("Before: " + Arrays.toString(array));
+		sortType.sort(array);
+//		System.out.println("After " + sortType.name() + " sort: " + Arrays.toString(array));
 		Assert.assertTrue(isSorted(array));
 	}
 
