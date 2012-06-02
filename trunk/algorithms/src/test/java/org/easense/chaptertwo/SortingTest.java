@@ -3,47 +3,53 @@ package org.easense.chaptertwo;
 import java.util.Random;
 
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SortingTest {
 	
 	// define the array's size
-	private final int PROBLEM_SCALE = 20;
+	private final int PROBLEM_SCALE = 20000;
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void selectionSort() {
 		sort(SortType.SELECTION);
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void insertionSort() {
 		sort(SortType.INSERTION);
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void bubbleSort() {
 		sort(SortType.BUBBLE);
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void shellSort() {
 		sort(SortType.SHELL);
 	}
 	
 	@Test
-	@Ignore
+//	@Ignore
 	public void mergeSort() {
 		sort(SortType.MERGE);
 	}
 	
 	@Test
+//	@Ignore
 	public void quickSort() {
 		sort(SortType.QUICK);
+	}
+	
+	@Test
+//	@Ignore
+	public void heapSort() {
+		sort(SortType.HEAP);
 	}
 
 	private void sort(SortType sortType) {
