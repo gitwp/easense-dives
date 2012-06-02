@@ -2,7 +2,6 @@ package org.easense.chaptertwo;
 
 import java.lang.reflect.Array;
 
-
 public enum SortType {
 	/**
 	 * Selection Sorting
@@ -86,7 +85,7 @@ public enum SortType {
 						if (compare == 0 || compare < 0 == ascend) {
 							break;
 						}
-						
+
 						array[j] = array[j - gap];
 						j -= gap;
 					}
@@ -99,7 +98,7 @@ public enum SortType {
 
 		}
 	}),
-	
+
 	/**
 	 * Merge sorting
 	 */
@@ -107,7 +106,6 @@ public enum SortType {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			this.sort(array, 0, array.length - 1, ascend);
 		}
-		
 
 		private <T extends Comparable<T>> void sort(T[] array, int lo, int hi, boolean ascend) {
 			// OPTIMIZE ONE
@@ -127,16 +125,16 @@ public enum SortType {
 
 					array[j] = toInsert;
 				}
-				
+
 				return;
 			}
-			
+
 			int mid = lo + (hi - lo) / 2;
 			sort(array, lo, mid, ascend);
 			sort(array, mid + 1, hi, ascend);
 			merge(array, lo, mid, hi, ascend);
 		}
-		
+
 		private <T extends Comparable<T>> void merge(T[] array, int lo, int mid, int hi, boolean ascend) {
 			// OPTIMIZE TWO
 			// if it is already in right order, skip this merge
@@ -145,19 +143,19 @@ public enum SortType {
 			if (leftEndCompareToRigthStart == 0 || leftEndCompareToRigthStart < 0 == ascend) {
 				return;
 			}
-			
+
 			@SuppressWarnings("unchecked")
-			T[] arrayCopy = (T[]) Array.newInstance(array.getClass().getComponentType(), hi - lo +  1);
+			T[] arrayCopy = (T[]) Array.newInstance(array.getClass().getComponentType(), hi - lo + 1);
 			System.arraycopy(array, lo, arrayCopy, 0, arrayCopy.length);
-			
+
 			int lowIdx = 0;
 			int highIdx = mid - lo + 1;
-			
+
 			for (int i = lo; i <= hi; i++) {
-				if (lowIdx > mid - lo) { 
+				if (lowIdx > mid - lo) {
 					// left sub array exhausted
 					array[i] = arrayCopy[highIdx++];
-				} else if (highIdx > hi - lo) { 
+				} else if (highIdx > hi - lo) {
 					// right sub array exhausted
 					array[i] = arrayCopy[lowIdx++];
 				} else if (arrayCopy[lowIdx].compareTo(arrayCopy[highIdx]) < 0 == ascend) {
@@ -168,7 +166,7 @@ public enum SortType {
 			}
 		}
 	}),
-	
+
 	/**
 	 * Quick Sorting
 	 */
@@ -176,58 +174,85 @@ public enum SortType {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			this.sort(array, 0, array.length - 1, ascend);
 		}
-		
 
 		private <T extends Comparable<T>> void sort(T[] array, int lo, int hi, boolean ascend) {
 			if (lo >= hi) {
 				return;
 			}
-			
-			int partitionIdx = partition(array, lo, hi, ascend);
-			
+
+			// int partitionIdx = partition(array, lo, hi, ascend);
+
+			T toFinal = array[lo];
+			int leftIdx = lo;
+			int rightIdx = hi;
+
+			int i = lo + 1;
+
+			while (i <= rightIdx) {
+				int compare = array[i].compareTo(toFinal);
+				if (compare == 0) {
+					i++;
+				} else if (compare < 0 == ascend) {
+					exchange(array, leftIdx++, i++);
+				} else {
+					exchange(array, rightIdx--, i);
+				}
+			}
+
 			// partially sort left array and right array
-			// no need to include the partitionIdx-th element
-			// since it is already in its final position
-			sort(array, lo, partitionIdx - 1, ascend);
-			sort(array, partitionIdx + 1, hi, ascend);
+			// no need to include the leftIdx-th to rightIdx-th elements
+			// since they are already in its final position
+			sort(array, lo, leftIdx - 1, ascend);
+			sort(array, rightIdx + 1, hi, ascend);
 		}
-		
+
+		/**
+		 * This is the old two-way partition method.
+		 * 
+		 * @param array
+		 * @param lo
+		 * @param hi
+		 * @param ascend
+		 * @return partitionIdx
+		 */
+		@Deprecated
+		@SuppressWarnings("unused")
 		private <T extends Comparable<T>> int partition(T[] array, int lo, int hi, boolean ascend) {
 			int leftIdx = lo;
 			int rightIdx = hi + 1;
-			
+
 			T toFinal = array[lo];
-			
+
 			while (true) {
-				// search from left to right to locate the element placed 
+				// search from left to right to locate the element placed
 				// in the wrong position which should be in the right
 				while (array[++leftIdx].compareTo(toFinal) < 0 == ascend) {
 					if (leftIdx >= hi) {
 						break;
 					}
 				}
-				
-				// search from right to left to locate the element placed 
+
+				// search from right to left to locate the element placed
 				// in the wrong position which should be in the left
 				while (array[--rightIdx].compareTo(toFinal) > 0 == ascend) {
 					if (rightIdx <= lo) {
 						break;
 					}
 				}
-				
+
 				if (leftIdx >= rightIdx) {
 					break;
 				} else {
 					exchange(array, leftIdx, rightIdx);
 				}
 			}
-			
+
 			exchange(array, lo, rightIdx);
-			
+
 			return rightIdx;
 		}
 	}),
-	
+
 	/**
 	 * Heap Sorting
 	 */
@@ -275,7 +300,7 @@ public enum SortType {
 			}
 		}
 	})
-	
+
 	;
 
 	private SortType(Sortable sortAlgo) {
@@ -294,7 +319,7 @@ public enum SortType {
 		}
 		sortAlgo.sort(array, ascend);
 	}
-	
+
 	/**
 	 * exchange the nodes specified by given indices, if the indices are equal,
 	 * do nothing
