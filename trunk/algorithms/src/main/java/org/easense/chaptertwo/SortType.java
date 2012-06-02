@@ -19,11 +19,7 @@ public enum SortType {
 					}
 				}
 
-				if (i != selected) {
-					T temp = array[i];
-					array[i] = array[selected];
-					array[selected] = temp;
-				}
+				exchange(array, i, selected);
 			}
 		}
 	}),
@@ -60,9 +56,7 @@ public enum SortType {
 				for (int j = i + 1; j < length; j++) {
 					int compare = array[i].compareTo(array[j]);
 					if (compare != 0 && compare > 0 == ascend) {
-						T temp = array[j];
-						array[j] = array[i];
-						array[i] = temp;
+						exchange(array, i, j);
 					}
 				}
 			}
@@ -232,12 +226,6 @@ public enum SortType {
 			
 			return rightIdx;
 		}
-		
-		private <T extends Comparable<T>> void exchange(T[] array, int i, int j) {
-			T temp = array[i];
-			array[i] = array[j];
-			array[j] = temp;
-		}
 	}),
 	
 	/**
@@ -286,16 +274,6 @@ public enum SortType {
 				nodeIdx = childIdx;
 			}
 		}
-
-		private void exchange(Object[] array, int p, int q) {
-			if (p == q) {
-				return;
-			}
-
-			Object temp = array[p];
-			array[p] = array[q];
-			array[q] = temp;
-		}
 	})
 	
 	;
@@ -315,6 +293,26 @@ public enum SortType {
 			return;
 		}
 		sortAlgo.sort(array, ascend);
+	}
+	
+	/**
+	 * exchange the nodes specified by given indices, if the indices are equal,
+	 * do nothing
+	 * 
+	 * @param array
+	 *            array which hold the elements
+	 * @param p
+	 *            one index to exchange
+	 * @param q
+	 *            the other index to exchange
+	 */
+	private static void exchange(Object[] array, int p, int q) {
+		if (p == q) {
+			return;
+		}
+		Object temp = array[p];
+		array[p] = array[q];
+		array[q] = temp;
 	}
 
 }
