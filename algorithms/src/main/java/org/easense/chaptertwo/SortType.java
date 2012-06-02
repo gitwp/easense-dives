@@ -13,7 +13,8 @@ public enum SortType {
 			for (int i = 0; i < len; i++) {
 				int selected = i;
 				for (int j = i + 1; j < len; j++) {
-					if (array[j].compareTo(array[selected]) < 0 == ascend) {
+					int compare = array[j].compareTo(array[selected]);
+					if (compare != 0 && compare < 0 == ascend) {
 						selected = j;
 					}
 				}
@@ -36,7 +37,11 @@ public enum SortType {
 			for (int i = 1; i < len; i++) {
 				T toInsert = array[i];
 				int j = i;
-				for (; j > 0 && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
+				for (; j > 0; j--) {
+					int compare = array[j - 1].compareTo(toInsert);
+					if (compare == 0 || compare < 0 == ascend) {
+						break;
+					}
 					array[j] = array[j - 1];
 				}
 
@@ -53,7 +58,8 @@ public enum SortType {
 			int length = array.length;
 			for (int i = 0; i < length; i++) {
 				for (int j = i + 1; j < length; j++) {
-					if (array[i].compareTo(array[j]) > 0 == ascend) {
+					int compare = array[i].compareTo(array[j]);
+					if (compare != 0 && compare > 0 == ascend) {
 						T temp = array[j];
 						array[j] = array[i];
 						array[i] = temp;
@@ -80,7 +86,13 @@ public enum SortType {
 				for (int i = gap; i < length; i++) {
 					T next = array[i];
 					int j = i;
-					while (j >= gap && (array[j - gap].compareTo(next) > 0 == ascend)) {
+					while (j >= gap) {
+						int compare = array[j - gap].compareTo(next);
+						// already find its position
+						if (compare == 0 || compare < 0 == ascend) {
+							break;
+						}
+						
 						array[j] = array[j - gap];
 						j -= gap;
 					}
@@ -111,7 +123,11 @@ public enum SortType {
 				for (int i = lo + 1; i <= hi; i++) {
 					T toInsert = array[i];
 					int j = i;
-					for (; j > lo && (array[j - 1].compareTo(toInsert) > 0 == ascend); j--) {
+					for (; j > lo; j--) {
+						int compare = array[j - 1].compareTo(toInsert);
+						if (compare == 0 || compare < 0 == ascend) {
+							break;
+						}
 						array[j] = array[j - 1];
 					}
 
@@ -131,7 +147,8 @@ public enum SortType {
 			// OPTIMIZE TWO
 			// if it is already in right order, skip this merge
 			// since there's no need to do so
-			if (array[mid].compareTo(array[mid + 1]) < 0 == ascend) {
+			int leftEndCompareToRigthStart = array[mid].compareTo(array[mid + 1]);
+			if (leftEndCompareToRigthStart == 0 || leftEndCompareToRigthStart < 0 == ascend) {
 				return;
 			}
 			
@@ -220,6 +237,64 @@ public enum SortType {
 			T temp = array[i];
 			array[i] = array[j];
 			array[j] = temp;
+		}
+	}),
+	
+	/**
+	 * Heap Sorting
+	 */
+	HEAP(new Sortable() {
+		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
+			final int length = array.length;
+
+			// Heap use array and below convention to form data. assume k is the
+			// k-th node then the node with index that nearest to (k - 1) / 2 is
+			// its
+			// parent and nodes with 2 * k + 1 and 2 * k + 2 are its two
+			// children
+
+			// initialize a heap
+			for (int k = (length - 2) / 2; k >= 0; k--) {
+				sink(array, k, length, ascend);
+			}
+
+			for (int currentHeapSize = length; currentHeapSize > 0;) {
+				exchange(array, 0, currentHeapSize - 1);
+				sink(array, 0, --currentHeapSize, ascend);
+			}
+		}
+
+		private <T extends Comparable<T>> void sink(T[] array, int nodeIdx, int heapSize, boolean ascend) {
+			while (2 * nodeIdx + 1 < heapSize) {
+				int childIdx = 2 * nodeIdx + 1;
+
+				// find the larger one between its two children, if there is any
+				if (childIdx + 1 < heapSize) {
+					int childrenCompare = array[childIdx].compareTo(array[childIdx + 1]);
+					if (childrenCompare != 0 && childrenCompare < 0 == ascend) {
+						childIdx++;
+					}
+				}
+
+				int parentChildCompare = array[nodeIdx].compareTo(array[childIdx]);
+				if (parentChildCompare == 0 || parentChildCompare > 0 == ascend) {
+					break;
+				}
+
+				exchange(array, nodeIdx, childIdx);
+
+				nodeIdx = childIdx;
+			}
+		}
+
+		private void exchange(Object[] array, int p, int q) {
+			if (p == q) {
+				return;
+			}
+
+			Object temp = array[p];
+			array[p] = array[q];
+			array[q] = temp;
 		}
 	})
 	
