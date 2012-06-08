@@ -1,6 +1,5 @@
 package org.easense.chaptertwo;
 
-import java.lang.reflect.Array;
 
 public enum SortType {
 	/**
@@ -145,7 +144,7 @@ public enum SortType {
 			}
 
 			@SuppressWarnings("unchecked")
-			T[] arrayCopy = (T[]) Array.newInstance(array.getClass().getComponentType(), hi - lo + 1);
+			T[] arrayCopy = (T[])new Comparable[hi -lo + 1];
 			System.arraycopy(array, lo, arrayCopy, 0, arrayCopy.length);
 
 			int lowIdx = 0;
