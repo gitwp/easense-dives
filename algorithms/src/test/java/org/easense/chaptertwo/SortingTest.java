@@ -1,63 +1,74 @@
 package org.easense.chaptertwo;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 public class SortingTest {
-	
+
 	// define the array's size
-	private final int PROBLEM_SCALE = 20000;
+	private final int PROBLEM_SCALE = 10000;
+
+	private boolean checkSorted = true;
+
+	private boolean showDebugInfo = false;
 
 	@Test
-//	@Ignore
+	// @Ignore
 	public void selectionSort() {
 		sort(SortType.SELECTION);
 	}
 
 	@Test
-//	@Ignore
+	// @Ignore
 	public void insertionSort() {
 		sort(SortType.INSERTION);
 	}
-	
+
 	@Test
-//	@Ignore
+	// @Ignore
 	public void bubbleSort() {
 		sort(SortType.BUBBLE);
 	}
-	
+
 	@Test
-//	@Ignore
+	// @Ignore
 	public void shellSort() {
 		sort(SortType.SHELL);
 	}
-	
+
 	@Test
-//	@Ignore
+	// @Ignore
 	public void mergeSort() {
 		sort(SortType.MERGE);
 	}
-	
+
 	@Test
-//	@Ignore
+	// @Ignore
 	public void quickSort() {
 		sort(SortType.QUICK);
 	}
-	
+
 	@Test
-//	@Ignore
+	// @Ignore
 	public void heapSort() {
 		sort(SortType.HEAP);
 	}
 
 	private void sort(SortType sortType) {
 		Integer[] array = generateArray(PROBLEM_SCALE);
-//		System.out.println("Before: " + Arrays.toString(array));
+		if (showDebugInfo) {
+			System.out.println("Before: " + Arrays.toString(array));
+		}
 		sortType.sort(array);
-//		System.out.println("After " + sortType.name() + " sort: " + Arrays.toString(array));
-		Assert.assertTrue(isSorted(array));
+		if (showDebugInfo) {
+			System.out.println("After " + sortType.name() + " sort: " + Arrays.toString(array));
+		}
+		if (checkSorted) {
+			Assert.assertTrue(isSorted(array));
+		}
 	}
 
 	private Integer[] generateArray(int length) {
@@ -69,7 +80,7 @@ public class SortingTest {
 		}
 		return array;
 	}
-	
+
 	private <T extends Comparable<T>> boolean isSorted(T[] array) {
 		if (array == null || array.length <= 2) {
 			return true;
