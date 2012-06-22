@@ -1,6 +1,5 @@
 package org.easense.chaptertwo;
 
-
 public enum SortType {
 	/**
 	 * Selection Sorting
@@ -51,10 +50,10 @@ public enum SortType {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			int length = array.length;
 			for (int i = 0; i < length; i++) {
-				for (int j = i + 1; j < length; j++) {
-					int compare = array[i].compareTo(array[j]);
+				for (int j = length - 1; j > i; j--) {
+					int compare = array[j - 1].compareTo(array[j]);
 					if (compare != 0 && compare > 0 == ascend) {
-						exchange(array, i, j);
+						exchange(array, j, j - 1);
 					}
 				}
 			}
@@ -144,7 +143,7 @@ public enum SortType {
 			}
 
 			@SuppressWarnings("unchecked")
-			T[] arrayCopy = (T[])new Comparable[hi -lo + 1];
+			T[] arrayCopy = (T[]) new Comparable[hi - lo + 1];
 			System.arraycopy(array, lo, arrayCopy, 0, arrayCopy.length);
 
 			int lowIdx = 0;
