@@ -49,18 +49,18 @@ public enum SortType {
 	BUBBLE(new Sortable() {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			int length = array.length;
-			int lastFirstExg = 0;
+			int lastExchangedIdx = 0;
 			for (int i = 0; i < length; i++) {
 				// mark the flag to identity whether exchange happened to false
 				boolean isExchanged = false;
 				// last compare and exchange happened before reaching index i
-				int currOrderedIdx = lastFirstExg > i ? lastFirstExg : i;
+				int currOrderedIdx = lastExchangedIdx > i ? lastExchangedIdx : i;
 				for (int j = length - 1; j > currOrderedIdx; j--) {
 					int compare = array[j - 1].compareTo(array[j]);
 					if (compare != 0 && compare > 0 == ascend) {
 						exchange(array, j - 1, j);
 						isExchanged = true;
-						lastFirstExg = j;
+						lastExchangedIdx = j;
 					}
 				}
 				// if no exchange happen means array is already in order
