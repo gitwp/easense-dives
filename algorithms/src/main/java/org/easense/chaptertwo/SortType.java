@@ -50,7 +50,7 @@ public enum SortType {
 		public <T extends Comparable<T>> void sort(T[] array, boolean ascend) {
 			int length = array.length;
 			int lastExchangedIdx = 0;
-			for (int i = 0; i < length; i++) {
+			for (int i = 0; i < length - 1; i++) {
 				// mark the flag to identity whether exchange happened to false
 				boolean isExchanged = false;
 				// last compare and exchange happened before reaching index i
