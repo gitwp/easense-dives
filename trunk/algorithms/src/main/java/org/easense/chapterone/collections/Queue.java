@@ -104,6 +104,7 @@ public class Queue<Item> implements Iterable<Item> {
 	 * @param first
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private Node reverse(Node first) {
 		if (first == null || first.next == null) {
 			return first;
