@@ -3,12 +3,11 @@ package org.easense.chapterone.collections;
 import java.util.Iterator;
 
 public class Queue<Item> implements Iterable<Item> {
+
 	/**
 	 * Inner Node class, used as Linked Nodes
 	 * 
 	 * @author Easense
-	 * 
-	 * @param <Item>
 	 */
 	private class Node {
 		Item item;
