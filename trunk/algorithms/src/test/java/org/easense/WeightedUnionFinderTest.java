@@ -67,6 +67,8 @@ public class WeightedUnionFinderTest {
 			finder.union(pId, qId);
 			System.out.println(pId + ", " + qId);
 		}
+		
+		scanner.close();
 
 		System.out.println("in file[" + path + "] Total: " + finder.componentSize()
 				+ " components\n===============================================\n");
