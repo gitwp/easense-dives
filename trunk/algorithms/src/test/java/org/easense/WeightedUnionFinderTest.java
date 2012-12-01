@@ -1,6 +1,5 @@
 package org.easense;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
@@ -22,13 +21,13 @@ public class WeightedUnionFinderTest {
 	}
 
 	@Test
-//	@Ignore
+	@Ignore
 	public void mediumFileSearch() throws FileNotFoundException {
 		searchIn(MEDIUM_FILE);
 	}
 
 	@Test
-	@Ignore
+//	@Ignore
 	public void largeAmountSearch() throws FileNotFoundException {
 		int size = 1000000;
 		WeightedUnionFinder finder = new WeightedUnionFinder(size);
@@ -45,14 +44,17 @@ public class WeightedUnionFinderTest {
 			System.out.println(p + ", " + q);
 		}
 
-		System.out.println("Total: " + finder.componentSize()
-				+ " components\n===============================================\n");
+		System.out
+				.println("Total: "
+						+ finder.componentSize()
+						+ " components\n===============================================\n");
 	}
 
-	private void searchIn(String path) throws FileNotFoundException {
+	private void searchIn(String fileName) throws FileNotFoundException {
 		WeightedUnionFinder finder;
-		String filePath = this.getClass().getClassLoader().getResource("").getPath() + "data/" + path;
-		Scanner scanner = new Scanner(new FileInputStream(filePath));
+
+		Scanner scanner = new Scanner(this.getClass().getClassLoader()
+				.getResourceAsStream("data/" + fileName));
 
 		finder = new WeightedUnionFinder(scanner.nextInt());
 
@@ -67,10 +69,12 @@ public class WeightedUnionFinderTest {
 			finder.union(pId, qId);
 			System.out.println(pId + ", " + qId);
 		}
-		
+
 		scanner.close();
 
-		System.out.println("in file[" + path + "] Total: " + finder.componentSize()
-				+ " components\n===============================================\n");
+		System.out
+				.println("in file[" + fileName + "] Total: "
+						+ finder.componentSize()
+						+ " components\n===============================================\n");
 	}
 }
