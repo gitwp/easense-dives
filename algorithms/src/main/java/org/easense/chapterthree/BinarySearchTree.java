@@ -155,6 +155,7 @@ public class BinarySearchTree<K extends Comparable<K>, V> {
 		bst.put(4, "Xuanxuan");
 		bst.put(5, "Jackson");
 		bst.put(7, "Baobao");
+		bst.put(3, "TestCommit");
 		bst.put(10, "Jhon");
 
 		bst.print();
